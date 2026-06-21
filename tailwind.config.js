@@ -1,46 +1,39 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./components/**/*.{js,vue,ts}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
-    "./plugins/**/*.{js,ts}",
-    "./app.vue",
-    "./error.vue",
+    './components/**/*.{js,vue,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './plugins/**/*.{js,ts}',
+    './app.vue',
+    './error.vue',
   ],
   theme: {
     extend: {
       colors: {
-        // High-end minimalist renk paleti (Karanlık ve Aydınlık mod uyumlu)
         brand: {
-          slate: {
-            50: '#f8fafc',
-            100: '#f1f5f9',
-            800: '#1e293b',
-            900: '#0f172a',
-            950: '#030712', // Derin Apple-esque arka plan rengi
+          pink: {
+            50: '#fff1f2',
+            light: '#fbcfe8',
+            DEFAULT: '#e04899',
           },
-          emerald: {
-            400: '#34d399',
-            500: '#10b981',
-          }
-        }
+          blue: {
+            DEFAULT: '#0ea5e9',
+          },
+          yellow: {
+            DEFAULT: '#fcd34d',
+          },
+          purple: {
+            DEFAULT: '#a855f7',
+          },
+          dark: '#272727',
+        },
       },
       fontFamily: {
-        // Sistem fontlarını kullanarak en pürüzsüz render performansını yakalıyoruz
-        sans: [
-          'SF Pro Display',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
-          'Roboto',
-          'Helvetica Neue',
-          'Arial',
-          'sans-serif'
-        ],
+        heading: ['Bricolage Grotesque', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif'],
       },
       animation: {
-        // Micro-interaction'lar ve pürüzsüz giriş efektleri için özel animasyonlar
         'fade-in': 'fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       },
@@ -52,9 +45,9 @@ export default {
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(12px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
-        }
-      }
+        },
+      },
     },
   },
   plugins: [],
-}
+};

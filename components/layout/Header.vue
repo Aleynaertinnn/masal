@@ -1,48 +1,58 @@
 <script setup>
 const { locale, locales, setLocale } = useI18n();
+const localePath = useLocalePath();
+
+const navigationLinks = [
+  { name: 'Anasayfa', path: '/' },
+  { name: 'Hakkımızda', path: '/about' },
+  { name: 'Albüm', path: '/gallery' },
+  { name: 'Blog', path: '/blog' },
+  { name: 'İletişim', path: '/contact' },
+];
 </script>
 
 <template>
   <header
-    class="w-full bg-brand-slate-950/80 backdrop-blur-md border-b border-brand-slate-900 fixed top-0 left-0 z-50 px-6 py-4"
+    class="w-full bg-white py-4 shadow-[0_4px_20px_rgba(0,0,0,0.02)] sticky top-0 z-50 animate-slide-up"
   >
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <!-- Logo -->
+    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
+      <!-- Sol Bölüm: Logo  -->
       <NuxtLink
-        to="/"
-        class="flex items-center gap-2 font-bold text-lg text-white"
+        :to="localePath('/')"
+        class="block transition-transform duration-300 hover:scale-105"
       >
-        <Icon name="logos:nuxt-icon" class="text-2xl" />
-        <span>Workspace</span>
+        <NuxtImg
+          src="/images/masal-logo.png"
+          alt="Masal Anaokulu"
+          width="180"
+          height="70"
+          class="h-12 w-auto object-contain"
+          loading="eager"
+          format="webp"
+        />
       </NuxtLink>
 
-      <!-- Sağ Taraf: Menü ve Dil Seçici -->
-      <div class="flex items-center gap-6">
-        <nav class="flex items-center gap-6 text-sm text-brand-slate-100/70">
-          <NuxtLink to="/" class="hover:text-white transition-colors"
-            >Ana Sayfa</NuxtLink
-          >
-        </nav>
+      <!-- Orta Bölüm: Navigasyon Linkleri  -->
 
-        <!-- Dil Değiştirme Butonları -->
-        <div
-          class="flex gap-2 bg-brand-slate-900 p-1 rounded-lg border border-brand-slate-800 text-xs"
+      <nav class="hidden md:flex items-center gap-8">
+        <NuxtLink
+          v-for="link in navigationLinks"
+          :key="link.path"
+          :to="localePath(link.path)"
+          class="relative text-[15px] font-medium text-brand-dark hover:text-brand-pink pb-2 transition-all duration-200 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:bg-brand-pink after:rounded-full after:opacity-0 after:transition-all after:duration-200"
+          active-class="!text-brand-pink after:!opacity-100 after:!bottom-1"
         >
-          <button
-            v-for="lang in locales"
-            :key="lang.code"
-            @click="setLocale(lang.code)"
-            :class="[
-              'px-2 py-1 rounded-md transition-all font-medium uppercase',
-              locale === lang.code
-                ? 'bg-brand-emerald-500 text-brand-slate-950'
-                : 'text-brand-slate-100/60 hover:text-white',
-            ]"
-          >
-            {{ lang.code }}
-          </button>
-        </div>
-      </div>
+          {{ link.name }}
+        </NuxtLink>
+      </nav>
+
+      <!-- Sağ Bölüm: Sizi Arayalım Kapsül Buton -->
+      <BaseButton
+        text="Sizi Arayalım"
+        as="external"
+        to="tel:+902881234567"
+        variant="dark"
+      />
     </div>
   </header>
 </template>
