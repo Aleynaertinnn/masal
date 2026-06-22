@@ -7,14 +7,18 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@pinia/nuxt',
     '@nuxt/image',
-    ['@nuxtjs/i18n', {
-      locales: [
-        { code: 'tr', language: 'tr-TR', name: 'Türkçe' },
-        { code: 'en', language: 'en-US', name: 'English' }
-      ],
-      defaultLocale: 'tr', // Varsayılan dil
-      strategy: 'prefix_except_default', // tr için direkt '/', en için '/en' rotası üretir
-    }],
+
+    [
+      '@nuxtjs/i18n',
+      {
+        locales: [
+          { code: 'tr', language: 'tr-TR', name: 'Türkçe' },
+          { code: 'en', language: 'en-US', name: 'English' },
+        ],
+        defaultLocale: 'tr',
+        strategy: 'prefix_except_default',
+      },
+    ],
   ],
   css: ['~/assets/css/main.css'],
 });

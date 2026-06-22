@@ -14,14 +14,14 @@ export default {
         brand: {
           pink: {
             50: '#fff1f2',
-            light: '#fbcfe8',
-            DEFAULT: '#e04899',
+            light: '#EDB6D4',
+            DEFAULT: '#e5629d',
           },
           blue: {
             DEFAULT: '#0ea5e9',
           },
           yellow: {
-            DEFAULT: '#fcd34d',
+            DEFAULT: '#FFD464',
           },
           purple: {
             DEFAULT: '#a855f7',

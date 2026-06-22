@@ -13,7 +13,7 @@ const navigationLinks = [
 
 <template>
   <header
-    class="w-full bg-white py-4 shadow-[0_4px_20px_rgba(0,0,0,0.02)] sticky top-0 z-50 animate-slide-up"
+    class="w-full bg-white/80 backdrop-blur-md py-4 sticky top-0 z-50 animate-slide-up"
   >
     <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
       <!-- Sol Bölüm: Logo  -->

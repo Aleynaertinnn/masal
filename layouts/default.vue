@@ -3,10 +3,12 @@
     <!-- Sabit Header -->
     <LayoutHeader />
 
-    <!-- Sayfa İçeriklerinin Geleceği Alan (Header yüksekliği kadar padding-top verdik) -->
-    <main class="flex-grow pt-20 animate-fade-in">
+    <!-- Sayfa İçeriklerinin Geleceği Alan  -->
+    <main class="flex-grow -mt-[88px] animate-fade-in">
       <slot />
     </main>
+
+    <QuickContact phone="+902881234567" whatsapp="902881234567" />
 
     <!-- Sabit Footer -->
     <LayoutFooter />

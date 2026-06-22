@@ -15,8 +15,6 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  color: var(--color-dark);
-  background-color: var(--color-white);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -31,7 +29,6 @@ h6,
 .font-heading {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-weight: 700;
-  color: var(--color-dark);
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
