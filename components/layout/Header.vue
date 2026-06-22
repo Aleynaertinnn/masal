@@ -1,4 +1,6 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
 const { locale, locales, setLocale } = useI18n();
 const localePath = useLocalePath();
 
@@ -9,11 +11,50 @@ const navigationLinks = [
   { name: 'Blog', path: '/blog' },
   { name: 'İletişim', path: '/contact' },
 ];
+
+// Akıllı Scroll Durum Yönetimi
+const isHeaderVisible = ref(true);
+const lastScrollY = ref(0);
+
+const handleScroll = () => {
+  const currentScrollY = window.scrollY;
+
+  // 1. Güvenlik Bariyeri: Eğer sayfa en üstteyse (0-50px arası), Header her zaman görünsün
+  if (currentScrollY < 50) {
+    isHeaderVisible.value = true;
+    lastScrollY.value = currentScrollY;
+    return;
+  }
+
+  // 2. Aşağı kaydırılıyorsa GİZLE, yukarı kaydırılıyorsa GÖSTER
+  if (currentScrollY > lastScrollY.value) {
+    isHeaderVisible.value = false; // Aşağı gidiyor -> Gizle
+  } else {
+    isHeaderVisible.value = true; // Yukarı çıkıyor -> Göster
+  }
+
+  // Mevcut scroll pozisyonunu bir sonraki kontrol için kaydet
+  lastScrollY.value = currentScrollY;
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true });
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <template>
+  <!-- 
+    DINAMİK HEADER:
+    - 'translate-y-0' ile ekranda durur, 'translate-y-full' (veya negatif) ile yukarı kaçar.
+    - Duyuru barı ile çakışmaması için '-top-1' faza göre 'transition-transform duration-300' ekledik.
+  -->
   <header
-    class="w-full bg-white/80 backdrop-blur-md py-4 sticky top-0 z-50 animate-slide-up"
+    class="w-full bg-white/60 backdrop-blur-md py-4 sticky top-0 z-50 transition-transform duration-300 ease-in-out"
+    :class="isHeaderVisible ? 'translate-y-0' : '-translate-y-full shadow-none'"
   >
     <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
       <!-- Sol Bölüm: Logo  -->
@@ -29,11 +70,11 @@ const navigationLinks = [
           class="h-12 w-auto object-contain"
           loading="eager"
           format="webp"
+          :key="locale"
         />
       </NuxtLink>
 
       <!-- Orta Bölüm: Navigasyon Linkleri  -->
-
       <nav class="hidden md:flex items-center gap-8">
         <NuxtLink
           v-for="link in navigationLinks"

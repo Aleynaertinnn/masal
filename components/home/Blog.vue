@@ -130,12 +130,12 @@ const posts = [
               </div>
 
               <div class="pt-2 pb-1 px-1 border-t border-brand-pink-light/10">
-                <NuxtLink
-                  to="#"
+                <button
+                  type="button"
                   class="inline-flex items-center gap-1 text-xs font-bold text-brand-dark border-b border-brand-dark hover:text-brand-pink hover:border-brand-pink transition-colors duration-300 pb-0.5"
                 >
                   <span>Devamını Oku</span>
-                </NuxtLink>
+                </button>
               </div>
             </div>
           </SwiperSlide>

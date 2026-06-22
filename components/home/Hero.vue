@@ -1,6 +1,21 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const { initPaperPlanes } = useAnimation();
+
+const heroSection = ref(null);
+const leftPlaneRef = ref(null);
+const rightPlaneRef = ref(null);
+
+onMounted(() => {
+  initPaperPlanes(heroSection.value, leftPlaneRef.value, rightPlaneRef.value);
+});
+</script>
+
 <template>
   <section
-    class="hero relative overflow-hidden  min-h-screen items-center flex flex-col justify-center"
+    ref="heroSection"
+    class="hero relative overflow-hidden min-h-screen items-center flex flex-col justify-center"
   >
     <!-- Dekor Blur -->
     <div
@@ -13,20 +28,19 @@
 
     <!-- Sol Uçak -->
     <div
-      class="absolute left-0 top-16 w-24 sm:w-36 md:w-48 lg:w-64 pointer-events-none float-left-plane z-10"
+      ref="leftPlaneRef"
+      class="absolute left-0 top-16 w-24 sm:w-36 md:w-48 lg:w-64 pointer-events-none z-10 will-change-transform"
     >
       <NuxtImg src="/images/masal-3.png" alt="Kağıt Uçak" class="w-full" />
     </div>
 
     <!-- Sağ Uçak -->
     <div
-      class="absolute right-0 top-16 w-24 sm:w-36 md:w-48 lg:w-64 pointer-events-none float-right-plane z-10"
+      ref="rightPlaneRef"
+      class="absolute right-0 top-16 w-24 sm:w-36 md:w-48 lg:w-64 pointer-events-none z-10 scale-x-[-1] will-change-transform"
     >
-      <NuxtImg
-        src="/images/masal-3.png"
-        alt="Kağıt Uçak"
-        class="w-full scale-x-[-1]"
-      />
+      <!-- NOT: scale-x-[-1] değerini CSS dönüşüm çakışması olmaması için resmin kendisine veya sarmalayıcıya dikkatlice koruyoruz -->
+      <NuxtImg src="/images/masal-3.png" alt="Kağıt Uçak" class="w-full" />
     </div>
 
     <!-- İçerik -->
@@ -67,11 +81,7 @@
           <Icon name="ph:play-fill" class="w-5 h-5" />
         </div>
       </div>
-
-     
     </div>
-
-    
 
     <!-- Alt İllüstrasyon -->
     <div
@@ -126,7 +136,4 @@
 .float-right-plane {
   animation: floatRight 6s ease-in-out infinite;
 }
-
-
-
 </style>
