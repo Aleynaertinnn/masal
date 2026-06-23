@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { Fancybox } from '@fancyapps/ui';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
 const { initPaperPlanes } = useAnimation();
 
@@ -9,6 +11,22 @@ const rightPlaneRef = ref(null);
 
 onMounted(() => {
   initPaperPlanes(heroSection.value, leftPlaneRef.value, rightPlaneRef.value);
+});
+
+onMounted(() => {
+  Fancybox.bind('[data-fancybox="video"]', {
+    Html: {
+      youtube: {
+        autoplay: 1,
+        rel: 0,
+        showinfo: 0,
+      },
+    },
+  });
+});
+
+onUnmounted(() => {
+  Fancybox.destroy();
 });
 </script>
 
@@ -39,7 +57,6 @@ onMounted(() => {
       ref="rightPlaneRef"
       class="absolute right-0 top-16 w-24 sm:w-36 md:w-48 lg:w-64 pointer-events-none z-10 scale-x-[-1] will-change-transform"
     >
-      <!-- NOT: scale-x-[-1] değerini CSS dönüşüm çakışması olmaması için resmin kendisine veya sarmalayıcıya dikkatlice koruyoruz -->
       <NuxtImg src="/images/masal-3.png" alt="Kağıt Uçak" class="w-full" />
     </div>
 
@@ -75,11 +92,27 @@ onMounted(() => {
           variant="dark"
         />
 
-        <div
-          class="w-10 h-10 rounded-full bg-neutral-900 text-white flex items-center justify-center"
+        <a
+          href="https://www.youtube.com/watch?v=ngOk-eo_sIo"
+          data-fancybox="video"
+          aria-label="Tanıtım Videosunu Oynat"
+          class="relative group cursor-pointer flex items-center justify-center"
         >
-          <Icon name="ph:play-fill" class="w-5 h-5" />
-        </div>
+          <!-- Arka Plandaki Canlı Dalga Efekti (Butonun arkasında sürekli büyüyen narin çember) -->
+          <span
+            class="absolute inset-0 rounded-full bg-neutral-900 opacity-30 group-hover:opacity-40 animate-ping-slow"
+          ></span>
+
+          <!-- Ana Oynat Butonu (Hover olunca pembeleşen premium geçiş) -->
+          <div
+            class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-xl transition-all duration-300 transform group-hover:scale-110 group-hover:bg-brand-pink z-10"
+          >
+            <Icon
+              name="ph:play-fill"
+              class="w-5 h-5 md:w-6 md:h-6 text-white ml-0.5 transition-transform duration-300 group-hover:rotate-12"
+            />
+          </div>
+        </a>
       </div>
     </div>
 

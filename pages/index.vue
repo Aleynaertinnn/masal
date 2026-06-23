@@ -28,6 +28,7 @@ onMounted(() => {
     <HomeStatsBanner />
     <HomeServices />
     <HomeGallery />
+    <HomeTeam />
     <HomeBlog />
     <HomeFaq />
   </div>

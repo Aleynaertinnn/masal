@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { Icon } from '@iconify/vue';
+import { onMounted, onUnmounted } from 'vue';
+import { Fancybox } from '@fancyapps/ui';
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
 // SSS Alanı görselleri
 const images = ref([
@@ -30,10 +33,40 @@ const images = ref([
   },
 ]);
 
+defineProps({
+  images: {
+    type: Array,
+    required: true,
+  },
+});
+
+onMounted(() => {
+  // Projedeki tüm 'data-fancybox="gallery"' niteliğine sahip elemanları bağla
+  Fancybox.bind('[data-fancybox="gallery"]', {
+    // Türkçe dil desteği ve lüks geçiş ayarları
+    Hash: false,
+    Thumbs: {
+      autoStart: true, // Alt kısımda küçük resim önizlemelerini göster
+    },
+    Images: {
+      Panzoom: {
+        maxScale: 2, // Maksimum yakınlaştırma oranı
+      },
+    },
+    // Açılış ve kapanış animasyon hızları
+    showClass: 'f-fadeIn',
+    hideClass: 'f-fadeOut',
+  });
+});
+
+onUnmounted(() => {
+  // Sayfa değiştirildiğinde hafıza sızıntısı (memory leak) olmaması için temizle
+  Fancybox.destroy();
+});
+
 const currentIndex = ref(0);
 const totalItems = computed(() => images.value.length);
 
-// İndis hesaplamasını döngüsel (infinite) yapmak için yardımcı fonksiyon
 const getDiff = (index) => {
   let diff = index - (currentIndex.value % totalItems.value);
   if (diff > totalItems.value / 2) diff -= totalItems.value;
@@ -41,11 +74,9 @@ const getDiff = (index) => {
   return diff;
 };
 
-// Yeni Yay (Arch) hesaplama mantığı - GSAP bağımlılığı olmadan CSS ile pürüzsüz geçiş
 const getItemStyle = (index) => {
   const diff = getDiff(index);
 
-  // Sadece ortadaki ve onun sağ/sol 2 kartını göster, diğerlerini gizle (performans için)
   if (Math.abs(diff) > 2) {
     return {
       opacity: 0,
@@ -54,11 +85,11 @@ const getItemStyle = (index) => {
     };
   }
 
-  const translateX = diff * 110; // Kartların yatayda birbirine olan uzaklığı (%)
-  const rotateY = diff * -25; // Sağa ve sola gittikçe arkaya doğru bükülme açısı
-  const scale = 1 - Math.abs(diff) * 0.15; // Kenarlardaki kartların küçülme oranı
-  const zIndex = 10 - Math.abs(diff); // Ortadaki kartın en üstte durması için
-  const opacity = 1 - Math.abs(diff) * 0.4; // Kenarlara doğru yumuşak solma efekti
+  const translateX = diff * 110;
+  const rotateY = diff * -25;
+  const scale = 1 - Math.abs(diff) * 0.15;
+  const zIndex = 10 - Math.abs(diff);
+  const opacity = 1 - Math.abs(diff) * 0.4;
 
   return {
     transform: `translateX(${translateX}%) scale(${scale}) rotateY(${rotateY}deg)`,
@@ -73,7 +104,6 @@ const next = () => {
 };
 
 const prev = () => {
-  // Eksi değerlerde de sonsuz döngünün bozulmaması için güvenli azaltma
   if (currentIndex.value === 0) {
     currentIndex.value = totalItems.value * 100;
   }
@@ -115,17 +145,20 @@ const prev = () => {
           class="absolute w-full h-full select-none"
           :style="getItemStyle(index)"
         >
-          <div
-            class="w-full h-full overflow-hidden rounded-[24px] bg-neutral-100 shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-neutral-100"
+          <a
+            :href="img.src"
+            data-fancybox="gallery"
+            :data-caption="img.alt"
+            class="block w-full h-full overflow-hidden rounded-[24px] bg-neutral-100 shadow-[0_20px_40px_rgba(0,0,0,0.06)] border border-neutral-100 cursor-zoom-in transition-transform duration-300 active:scale-95 group"
           >
             <NuxtImg
               :src="img.src"
               :alt="img.alt"
-              class="w-full h-full object-cover pointer-events-none"
+              class="w-full h-full object-cover pointer-events-none transition-transform duration-500 group-hover:scale-105"
               format="webp"
               loading="lazy"
             />
-          </div>
+          </a>
         </div>
       </div>
     </div>
